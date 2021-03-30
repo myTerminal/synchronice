@@ -2,6 +2,53 @@
 //!
 //! `synchronice` is a text-based frontend for Syncthing.
 
+use std::process;
+
+use ansi_term::Color;
+use clap::{crate_authors, crate_description, crate_name, crate_version, App, SubCommand};
+
+mod environment;
+
+use environment::does_exist;
+
+/// The entry point to synchronice.
+///
+/// Checks if Syncthing is installed in the environmen and calls `run`.
+/// Otherwise, ends the program with an appropriate message.
 fn main() {
-    println!("Hello, world!");
+    // Detect presence of Syncthing
+    if does_exist("syncthing") {
+        // Run synchronice with input parameters
+        run();
+    } else {
+        // Print error message about absence of Syncthing
+        println!(
+            "{}",
+            Color::Red.paint("Syncthing doesn't seem to be installed!")
+        );
+
+        // Exit synchronice
+        process::exit(0);
+    }
+}
+
+/// Runs Synchronice.
+fn run() {
+    let matches = App::new(crate_name!())
+        .version(crate_version!())
+        .author(crate_authors!())
+        .about(crate_description!())
+        .subcommand(
+            SubCommand::with_name("launch")
+                .about("Launches a text-based interface for Syncthing")
+        )
+        .get_matches();
+
+    if let Some(_) = matches.subcommand_matches("launch") {
+        // Start the curses-based interface
+        println!("Synchronice can now be running!");
+    }  else {
+        // Ask to be run with a command
+        println!("{}", Color::Red.paint("Please run synchronice with a command!"));
+    }
 }
