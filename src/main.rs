@@ -8,8 +8,10 @@ use ansi_term::Color;
 use clap::{crate_authors, crate_description, crate_name, crate_version, App, SubCommand};
 
 mod environment;
+mod interface;
 
 use environment::does_exist;
+use interface::show_dashboard;
 
 /// The entry point to synchronice.
 ///
@@ -39,16 +41,18 @@ fn run() {
         .author(crate_authors!())
         .about(crate_description!())
         .subcommand(
-            SubCommand::with_name("launch")
-                .about("Launches a text-based interface for Syncthing")
+            SubCommand::with_name("launch").about("Launches a text-based interface for Syncthing"),
         )
         .get_matches();
 
     if let Some(_) = matches.subcommand_matches("launch") {
         // Start the curses-based interface
-        println!("Synchronice can now be running!");
-    }  else {
+        show_dashboard();
+    } else {
         // Ask to be run with a command
-        println!("{}", Color::Red.paint("Please run synchronice with a command!"));
+        println!(
+            "{}",
+            Color::Red.paint("Please run synchronice with a command!")
+        );
     }
 }
