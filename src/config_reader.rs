@@ -16,8 +16,7 @@ use crate::environment;
 /// get_api_key();
 /// ```
 pub fn get_api_key() -> String {
-    let config_file_contents = fs::read_to_string(get_syncthing_config_path())
-        .expect("Could not read Syncthing config file!");
+    let config_file_contents = get_syncthing_config_as_string();
 
     let mut reader = Reader::from_str(&config_file_contents);
     reader.trim_text(true);
@@ -39,6 +38,17 @@ pub fn get_api_key() -> String {
     }
 
     apikey
+}
+
+/// Returns Syncthing configuration as a string.
+///
+/// # Example
+///
+/// ```
+/// get_syncthing_config_as_string();
+/// ```
+pub fn get_syncthing_config_as_string() -> String {
+    fs::read_to_string(get_syncthing_config_path()).expect("Could not read Syncthing config file!")
 }
 
 /// Finds Syncthing configuration path.
