@@ -3,6 +3,8 @@
 use cursive::views::{Dialog, TextView};
 use cursive::Cursive;
 
+use crate::config_reader;
+
 /// Creates the text-based interface using curses.
 ///
 /// # Example
@@ -20,7 +22,7 @@ pub fn show_dashboard() {
     // Show notice about being under development
     show_development_notice(&mut siv);
 
-    // Start the event loop.
+    // Start the event loop
     siv.run();
 }
 
@@ -48,6 +50,15 @@ pub fn show_development_notice(s: &mut Cursive) {
 /// ```
 pub fn start(s: &mut Cursive) {
     s.pop_layer();
+
+    // Check for apikey
+    if config_reader::get_api_key() == "" {
+        s.add_layer(
+            Dialog::text("Could not fetch API key!")
+                .title("Error")
+                .button("Quit", |s| s.quit()),
+        );
+    }
 
     // TODO: Implement
 }
