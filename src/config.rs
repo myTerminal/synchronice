@@ -8,27 +8,43 @@ use quick_xml::Reader;
 
 use crate::environment;
 
+/// An abtract representation of set of connection details.
+///
+/// This struct defines basic connection details for the Syncthing REST API.
+pub struct Connection {
+    pub apikey: String,
+    pub address: String,
+}
+
 /// Reads apikey for REST API.
 ///
 /// # Example
 ///
 /// ```
-/// get_api_key();
+/// get_connection();
 /// ```
-pub fn get_api_key() -> String {
+pub fn get_connection() -> Connection {
     let config_file_contents = get_syncthing_config_as_string();
 
     let mut reader = Reader::from_str(&config_file_contents);
     reader.trim_text(true);
 
     let mut buf = Vec::new();
-    let mut apikey = String::new();
+    let mut connection = Connection {
+        apikey: String::new(),
+        address: String::new(),
+    };
 
     loop {
         match reader.read_event(&mut buf) {
             Ok(Event::Start(ref e)) if e.name() == b"apikey" => {
-                apikey = reader
+                connection.apikey = reader
                     .read_text(b"apikey", &mut Vec::new())
+                    .expect("Cannot decode text value");
+            }
+            Ok(Event::Start(ref e)) if e.name() == b"address" => {
+                connection.address = reader
+                    .read_text(b"address", &mut Vec::new())
                     .expect("Cannot decode text value");
             }
             Ok(Event::Eof) => break,
@@ -37,7 +53,7 @@ pub fn get_api_key() -> String {
         buf.clear();
     }
 
-    apikey
+    connection
 }
 
 /// Returns Syncthing configuration as a string.

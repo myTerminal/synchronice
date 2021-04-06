@@ -51,10 +51,12 @@ pub fn show_development_notice(s: &mut Cursive) {
 pub fn start(s: &mut Cursive) {
     s.pop_layer();
 
-    // Check for apikey
-    if config::get_api_key() == "" {
+    let connection = config::get_connection();
+
+    // Check for connection details
+    if connection.apikey == "" || connection.address == "" {
         s.add_layer(
-            Dialog::text("Could not fetch API key!")
+            Dialog::text("Could not fetch connection details!")
                 .title("Error")
                 .button("Quit", |s| s.quit()),
         );
