@@ -3,7 +3,7 @@
 use cursive::views::{Dialog, TextView};
 use cursive::Cursive;
 
-use crate::config_reader;
+use crate::config;
 
 /// Creates the text-based interface using curses.
 ///
@@ -52,7 +52,7 @@ pub fn start(s: &mut Cursive) {
     s.pop_layer();
 
     // Check for apikey
-    if config_reader::get_api_key() == "" {
+    if config::get_api_key() == "" {
         s.add_layer(
             Dialog::text("Could not fetch API key!")
                 .title("Error")
