@@ -32,7 +32,7 @@ pub fn get_connection() -> Connection {
     let mut buf = Vec::new();
     let mut connection = Connection {
         apikey: String::new(),
-        address: String::new(),
+        address: String::from("localhost:8384"), // TODO: Implement extraction
     };
 
     loop {
@@ -40,11 +40,6 @@ pub fn get_connection() -> Connection {
             Ok(Event::Start(ref e)) if e.name() == b"apikey" => {
                 connection.apikey = reader
                     .read_text(b"apikey", &mut Vec::new())
-                    .expect("Cannot decode text value");
-            }
-            Ok(Event::Start(ref e)) if e.name() == b"address" => {
-                connection.address = reader
-                    .read_text(b"address", &mut Vec::new())
                     .expect("Cannot decode text value");
             }
             Ok(Event::Eof) => break,
