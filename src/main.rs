@@ -2,6 +2,9 @@
 //!
 //! `synchronice` is a text-based frontend for Syncthing.
 
+#[macro_use]
+extern crate serde_derive;
+
 use std::process;
 
 use ansi_term::Color;
@@ -10,6 +13,7 @@ use clap::{crate_authors, crate_description, crate_name, crate_version, App, Sub
 mod config;
 mod environment;
 mod interface;
+mod service;
 
 use environment::does_exist;
 use interface::show_dashboard;

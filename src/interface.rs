@@ -4,6 +4,7 @@ use cursive::views::{Dialog, TextView};
 use cursive::Cursive;
 
 use crate::config;
+use crate::service;
 
 /// Creates the text-based interface using curses.
 ///
@@ -62,5 +63,13 @@ pub fn start(s: &mut Cursive) {
         );
     }
 
+    let version = service::get_version();
+
     // TODO: Implement
+
+    s.add_layer(
+        Dialog::text(format!("{}", version.longVersion))
+            .title("Test")
+            .button("OK", |s| s.quit()),
+    );
 }
