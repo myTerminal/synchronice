@@ -49,6 +49,13 @@ impl RestPath<()> for Version {
     }
 }
 
+/// Returns the version for current Syncthing instance
+///
+/// # Example
+///
+/// ```
+/// get_version();
+/// ```
 pub fn get_version() -> Version {
     let connection = config::get_connection();
 
