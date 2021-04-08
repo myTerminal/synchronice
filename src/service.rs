@@ -12,7 +12,35 @@ pub struct Version {
     pub longVersion: String,
 }
 
-/// An implementation for 'Version'
+/// An abstract representation of an associated device
+///
+/// This struct defines a few properties of an associated device.
+#[derive(Serialize, Deserialize)]
+pub struct AssociatedDevice {
+    pub deviceID: String,
+}
+
+/// An abstract representation of a folder
+///
+/// This struct defines a few properties of interests for a folder.
+#[derive(Serialize, Deserialize)]
+pub struct Folder {
+    pub id: String,
+    pub label: String,
+    pub path: String,
+    pub devices: Vec<AssociatedDevice>,
+}
+
+/// An abstract representation of a device
+///
+/// This struct defines a few properties of a device.
+#[derive(Serialize, Deserialize)]
+pub struct Device {
+    pub deviceID: String,
+    pub name: String,
+}
+
+/// An implementation for RestPath
 ///
 /// This struct defines the path for /rest/system/version.
 impl RestPath<()> for Version {
