@@ -64,12 +64,19 @@ pub fn start(s: &mut Cursive) {
     }
 
     let version = service::get_version();
+    let config = service::get_config();
 
     // TODO: Implement
 
     s.add_layer(
         Dialog::text(format!("{}", version.longVersion))
             .title("Test")
+            .button("OK", |s| s.quit()),
+    );
+
+    s.add_layer(
+        Dialog::text(format!("{}", config.devices[0].name))
+            .title("Devices")
             .button("OK", |s| s.quit()),
     );
 }

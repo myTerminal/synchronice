@@ -40,12 +40,30 @@ pub struct Device {
     pub name: String,
 }
 
+/// An abstract representation of Syncthing config
+///
+/// This struct defines a few properties of Syncthing config.
+#[derive(Serialize, Deserialize)]
+pub struct Config {
+    pub folders: Vec<Folder>,
+    pub devices: Vec<Device>,
+}
+
 /// An implementation for RestPath
 ///
 /// This struct defines the path for /rest/system/version.
 impl RestPath<()> for Version {
     fn get_path(_: ()) -> Result<String, Error> {
         Ok(String::from("rest/system/version"))
+    }
+}
+
+/// An implementation for RestPath
+///
+/// This struct defines the path for /rest/system/config.
+impl RestPath<()> for Config {
+    fn get_path(_: ()) -> Result<String, Error> {
+        Ok(String::from("rest/system/config"))
     }
 }
 
@@ -63,6 +81,24 @@ pub fn get_version() -> Version {
     client.set_header("X-API-KEY", &connection.apikey);
 
     let data: Version = client.get(()).unwrap();
+
+    data
+}
+
+/// Returns the configuration for current Syncthing instance
+///
+/// # Example
+///
+/// ```
+/// get_config();
+/// ```
+pub fn get_config() -> Config {
+    let connection = config::get_connection();
+
+    let mut client = RestClient::new(&format!("http://{}", &connection.address)).unwrap();
+    client.set_header("X-API-KEY", &connection.apikey);
+
+    let data: Config = client.get(()).unwrap();
 
     data
 }
