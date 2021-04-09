@@ -65,6 +65,7 @@ pub fn start(s: &mut Cursive) {
 
     let version = service::get_version();
     let config = service::get_config();
+    let events = service::get_events();
 
     // TODO: Implement
 
@@ -77,6 +78,12 @@ pub fn start(s: &mut Cursive) {
     s.add_layer(
         Dialog::text(format!("{}", config.devices[0].name))
             .title("Devices")
+            .button("OK", |s| s.quit()),
+    );
+
+    s.add_layer(
+        Dialog::text(format!("{}", events.0[0].id))
+            .title("Events")
             .button("OK", |s| s.quit()),
     );
 }
