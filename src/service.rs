@@ -32,7 +32,8 @@ pub fn get_version() -> Version {
     let connection = config::get_connection();
 
     let mut client = RestClient::new(&format!("http://{}", &connection.address)).unwrap();
-    client.set_header("X-API-KEY", &connection.apikey);
+    client.set_header("X-API-KEY", &connection.apikey)
+        .expect("Couldn't set header for request");
 
     let data: Version = client.get(()).unwrap();
 
@@ -96,7 +97,8 @@ pub fn get_config() -> Config {
     let connection = config::get_connection();
 
     let mut client = RestClient::new(&format!("http://{}", &connection.address)).unwrap();
-    client.set_header("X-API-KEY", &connection.apikey);
+    client.set_header("X-API-KEY", &connection.apikey)
+        .expect("Couldn't set header for request");
 
     let data: Config = client.get(()).unwrap();
 
@@ -146,7 +148,8 @@ pub fn get_events() -> Events {
     let connection = config::get_connection();
 
     let mut client = RestClient::new(&format!("http://{}", &connection.address)).unwrap();
-    client.set_header("X-API-KEY", &connection.apikey);
+    client.set_header("X-API-KEY", &connection.apikey)
+        .expect("Couldn't set header for request");
 
     let query = vec![("events", "DeviceConnected,DeviceDisconnected")];
     let data: Events = client.get_with::<_, Events>((), &query).unwrap();
