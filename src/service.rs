@@ -1,10 +1,10 @@
-//! Connects to Syncthing's REST API
+//! Connects to Syncthing's REST API.
 
 use restson::{Error, RestClient, RestPath};
 
 use crate::config;
 
-/// An abtract representation of response for /rest/system/version
+/// An abtract representation of response for /rest/system/version.
 ///
 /// This struct defines a usable subset of the response.
 #[derive(Serialize, Deserialize)]
@@ -12,7 +12,7 @@ pub struct Version {
     pub longVersion: String,
 }
 
-/// An implementation for RestPath
+/// An implementation for RestPath.
 ///
 /// This struct defines the path for /rest/system/version.
 impl RestPath<()> for Version {
@@ -21,7 +21,7 @@ impl RestPath<()> for Version {
     }
 }
 
-/// Returns the version for current Syncthing instance
+/// Returns the version for current Syncthing instance.
 ///
 /// # Example
 ///
@@ -39,7 +39,7 @@ pub fn get_version() -> Version {
     data
 }
 
-/// An abstract representation of an associated device
+/// An abstract representation of an associated device.
 ///
 /// This struct defines a few properties of an associated device.
 #[derive(Serialize, Deserialize)]
@@ -47,7 +47,7 @@ pub struct AssociatedDevice {
     pub deviceID: String,
 }
 
-/// An abstract representation of a folder
+/// An abstract representation of a folder.
 ///
 /// This struct defines a few properties of interests for a folder.
 #[derive(Serialize, Deserialize)]
@@ -58,7 +58,7 @@ pub struct Folder {
     pub devices: Vec<AssociatedDevice>,
 }
 
-/// An abstract representation of a device
+/// An abstract representation of a device.
 ///
 /// This struct defines a few properties of a device.
 #[derive(Serialize, Deserialize)]
@@ -67,7 +67,7 @@ pub struct Device {
     pub name: String,
 }
 
-/// An abstract representation of Syncthing config
+/// An abstract representation of Syncthing config.
 ///
 /// This struct defines a few properties of Syncthing config.
 #[derive(Serialize, Deserialize)]
@@ -76,7 +76,7 @@ pub struct Config {
     pub devices: Vec<Device>,
 }
 
-/// An implementation for RestPath
+/// An implementation for RestPath.
 ///
 /// This struct defines the path for /rest/system/config.
 impl RestPath<()> for Config {
@@ -85,7 +85,7 @@ impl RestPath<()> for Config {
     }
 }
 
-/// Returns the configuration for current Syncthing instance
+/// Returns the configuration for current Syncthing instance.
 ///
 /// # Example
 ///
@@ -103,7 +103,7 @@ pub fn get_config() -> Config {
     data
 }
 
-/// An abstract representation of a connected/disconnected device
+/// An abstract representation of a connected/disconnected device.
 ///
 /// This struct defines a few properties of a connected/disconnected device.
 #[derive(Serialize, Deserialize)]
@@ -111,7 +111,7 @@ pub struct ConnectionDevice {
     pub id: String,
 }
 
-/// An abstract representation of a connection event
+/// An abstract representation of a connection event.
 ///
 /// This struct defines a few properties of a connection event.
 #[derive(Serialize, Deserialize)]
@@ -120,13 +120,13 @@ pub struct Event {
     pub data: ConnectionDevice,
 }
 
-/// An abstract representation of a collection of events
+/// An abstract representation of a collection of events.
 ///
 /// This struct defines a a connection events.
 #[derive(Serialize, Deserialize)]
 pub struct Events(pub Vec<Event>);
 
-/// An implementation for RestPath
+/// An implementation for RestPath.
 ///
 /// This struct defines the path for /rest/events.
 impl RestPath<()> for Events {
@@ -135,7 +135,7 @@ impl RestPath<()> for Events {
     }
 }
 
-/// Returns the Events from Syncthing
+/// Returns the Events from Syncthing.
 ///
 /// # Example
 ///

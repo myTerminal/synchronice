@@ -2,7 +2,7 @@
 
 use crate::service::{Config, Events, Version};
 
-/// An abstract representation of info to be displayed on the dashboard
+/// An abstract representation of info to be displayed on the dashboard.
 ///
 /// This struct defines the info portion of the viewmodel.
 pub struct Info {
@@ -10,7 +10,7 @@ pub struct Info {
     pub status: String,
 }
 
-/// An abstract representation of folders to be displayed on the dashboard
+/// An abstract representation of folders to be displayed on the dashboard.
 ///
 /// This struct defines the folders portion of the viewmodel.
 pub struct SyncedFolders {
@@ -20,7 +20,7 @@ pub struct SyncedFolders {
     pub devices: Vec<String>,
 }
 
-/// An abstract representation of devices to be displayed on the dasbboard
+/// An abstract representation of devices to be displayed on the dashboard.
 ///
 /// This struct defines the devices portion of the viewmodel.
 pub struct SyncedDevices {
