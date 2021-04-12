@@ -13,7 +13,7 @@ pub struct Info {
 /// An abstract representation of folders to be displayed on the dashboard.
 ///
 /// This struct defines the folders portion of the viewmodel.
-pub struct SyncedFolders {
+pub struct SyncedFolder {
     pub label: String,
     pub path: String,
     pub status: String,
@@ -23,7 +23,7 @@ pub struct SyncedFolders {
 /// An abstract representation of devices to be displayed on the dashboard.
 ///
 /// This struct defines the devices portion of the viewmodel.
-pub struct SyncedDevices {
+pub struct SyncedDevice {
     pub id: String,
     pub name: String,
     pub folders: Vec<String>,
@@ -31,8 +31,8 @@ pub struct SyncedDevices {
 
 pub struct Viewmodel {
     info: Info,
-    synced_folders: Vec<SyncedFolders>,
-    synced_devices: Vec<SyncedDevices>,
+    synced_folders: Vec<SyncedFolder>,
+    synced_devices: Vec<SyncedDevice>,
 }
 
 // Gets updated viewmodel to be rendered on the interface.
