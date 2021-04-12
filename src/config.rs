@@ -28,7 +28,7 @@ pub fn get_connection() -> Connection {
     let mut reader = Reader::from_str(&config_file_contents);
     reader.trim_text(true);
 
-    let mut buf = Vec::new();
+    let mut buf = vec![];
     let mut connection = Connection {
         apikey: String::new(),
         address: String::from("localhost:8384"), // TODO: Implement extraction
@@ -38,7 +38,7 @@ pub fn get_connection() -> Connection {
         match reader.read_event(&mut buf) {
             Ok(Event::Start(ref e)) if e.name() == b"apikey" => {
                 connection.apikey = reader
-                    .read_text(b"apikey", &mut Vec::new())
+                    .read_text(b"apikey", &mut vec![])
                     .expect("Cannot decode text value");
             }
             Ok(Event::Eof) => break,

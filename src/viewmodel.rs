@@ -42,7 +42,7 @@ pub fn get_updated_viewmodel(version: Version, config: Config, events: Events) -
             version: version.longVersion,
             status: String::from("Connected"),
         },
-        synced_folders: Vec::new(),
-        synced_devices: Vec::new(),
+        synced_folders: vec![],
+        synced_devices: vec![],
     };
 }
