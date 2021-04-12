@@ -5,6 +5,7 @@ use cursive::Cursive;
 
 use crate::config;
 use crate::service;
+use crate::viewmodel;
 
 /// Creates the text-based interface using curses.
 ///
@@ -63,27 +64,33 @@ pub fn start(s: &mut Cursive) {
         );
     }
 
+    // Get version and config
     let version = service::get_version();
     let config = service::get_config();
+
+    // Get recent events
     let events = service::get_events();
 
-    // TODO: Implement
+    // Get updated viewmodel
+    let viewmodel = viewmodel::get_updated_viewmodel(version, config, events);
 
-    s.add_layer(
-        Dialog::text(format!("{}", version.longVersion))
-            .title("Test")
-            .button("OK", |s| s.quit()),
-    );
+    // // TODO: Implement
 
-    s.add_layer(
-        Dialog::text(format!("{}", config.devices[0].name))
-            .title("Devices")
-            .button("OK", |s| s.quit()),
-    );
+    // s.add_layer(
+    //     Dialog::text(format!("{}", version.longVersion))
+    //         .title("Test")
+    //         .button("OK", |s| s.quit()),
+    // );
 
-    s.add_layer(
-        Dialog::text(format!("{}", events.0[0].id))
-            .title("Events")
-            .button("OK", |s| s.quit()),
-    );
+    // s.add_layer(
+    //     Dialog::text(format!("{}", config.devices[0].name))
+    //         .title("Devices")
+    //         .button("OK", |s| s.quit()),
+    // );
+
+    // s.add_layer(
+    //     Dialog::text(format!("{}", events.0[0].id))
+    //         .title("Events")
+    //         .button("OK", |s| s.quit()),
+    // );
 }
