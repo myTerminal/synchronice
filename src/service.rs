@@ -44,6 +44,7 @@ pub fn get_version() -> Version {
 ///
 /// This struct defines a few properties of an associated device.
 #[derive(Serialize, Deserialize)]
+#[allow(non_snake_case)]
 pub struct AssociatedDevice {
     pub deviceID: String,
 }
@@ -63,6 +64,7 @@ pub struct Folder {
 ///
 /// This struct defines a few properties of a device.
 #[derive(Serialize, Deserialize)]
+#[allow(non_snake_case)]
 pub struct Device {
     pub deviceID: String,
     pub name: String,
