@@ -129,3 +129,12 @@ pub fn reload_config(s: &mut Cursive) {
     //         .button("OK", |s| s.quit()),
     // );
 }
+
+/// Updates the connection statuses.
+///
+/// # Example
+///
+/// ```
+/// update_connection_statuses(s);
+/// ```
+pub fn update_connection_statuses(s: &mut Cursive) {}
