@@ -8,6 +8,7 @@ use crate::config;
 ///
 /// This struct defines a usable subset of the response.
 #[derive(Serialize, Deserialize)]
+#[allow(non_snake_case)]
 pub struct Version {
     pub longVersion: String,
 }
