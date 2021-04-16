@@ -1,6 +1,6 @@
 //! Contains functions to create the text-based interface.
 
-use cursive::views::{Dialog, TextView};
+use cursive::views::{Dialog, LinearLayout, Panel, TextView};
 use cursive::Cursive;
 
 use crate::config;
@@ -20,6 +20,7 @@ pub fn show_dashboard() {
 
     // Add the global 'quit' command
     siv.add_global_callback('q', |s| s.quit());
+    siv.add_global_callback('r', reload_config);
 
     // Show notice about being under development
     show_development_notice(&mut siv);
@@ -64,15 +65,49 @@ pub fn start(s: &mut Cursive) {
         );
     }
 
+    // Load interface
+    reload_config(s);
+}
+
+/// Refreshes the list of folders and devices.
+///
+/// # Example
+///
+/// ```
+/// reload_config(s);
+/// ```
+pub fn reload_config(s: &mut Cursive) {
     // Get version and config
     let version = service::get_version();
     let config = service::get_config();
 
     // Get recent events
-    let events = service::get_events();
+    let events = service::Events(vec![]); // service::get_events();
 
     // Get updated viewmodel
     let viewmodel = viewmodel::get_updated_viewmodel(version, config, events);
+
+    // Create folders and devices layouts
+    let mut folders_layout: LinearLayout = LinearLayout::vertical();
+    let mut devices_layout: LinearLayout = LinearLayout::vertical();
+
+    // Populate list of folders
+    folders_layout.add_child(Panel::new(TextView::new("Folder 1")));
+
+    // Populate list of devices
+    devices_layout.add_child(Panel::new(TextView::new("Devices 1")));
+
+    // Construct the layer
+    s.add_layer(
+        Dialog::around(
+            LinearLayout::horizontal()
+                .child(Dialog::around(folders_layout).title("Folders"))
+                .child(Dialog::around(devices_layout).title("Devices")),
+        )
+        .title("Synchronice")
+        .button("(R)efresh", reload_config)
+        .button("(Q)uit", |s| s.quit()),
+    );
 
     // // TODO: Implement
 
