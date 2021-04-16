@@ -1,6 +1,6 @@
 //! Contains functions to create the text-based interface.
 
-use cursive::views::{Dialog, LinearLayout, Panel, TextView};
+use cursive::views::{Dialog, DummyView, LinearLayout, Panel, TextView};
 use cursive::Cursive;
 
 use crate::config;
@@ -100,9 +100,11 @@ pub fn reload_config(s: &mut Cursive) {
     // Construct the layer
     s.add_layer(
         Dialog::around(
-            LinearLayout::horizontal()
-                .child(Dialog::around(folders_layout).title("Folders"))
-                .child(Dialog::around(devices_layout).title("Devices")),
+            LinearLayout::vertical().child(DummyView).child(
+                LinearLayout::horizontal()
+                    .child(Dialog::around(folders_layout).title("Folders"))
+                    .child(Dialog::around(devices_layout).title("Devices")),
+            ),
         )
         .title("Synchronice")
         .button("(R)eload", reload_config)
