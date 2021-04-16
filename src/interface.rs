@@ -105,7 +105,8 @@ pub fn reload_config(s: &mut Cursive) {
                 .child(Dialog::around(devices_layout).title("Devices")),
         )
         .title("Synchronice")
-        .button("(R)efresh", reload_config)
+        .button("(R)eload", reload_config)
+        .button("Refre(S)h", refresh_connection_statuses)
         .button("(Q)uit", |s| s.quit()),
     );
 
@@ -130,11 +131,11 @@ pub fn reload_config(s: &mut Cursive) {
     // );
 }
 
-/// Updates the connection statuses.
+/// Refreshes the connection statuses.
 ///
 /// # Example
 ///
 /// ```
-/// update_connection_statuses(s);
+/// refresh_connection_statuses(s);
 /// ```
-pub fn update_connection_statuses(s: &mut Cursive) {}
+pub fn refresh_connection_statuses(s: &mut Cursive) {}
