@@ -30,9 +30,9 @@ pub struct SyncedDevice {
 }
 
 pub struct Viewmodel {
-    info: Info,
-    synced_folders: Vec<SyncedFolder>,
-    synced_devices: Vec<SyncedDevice>,
+    pub info: Info,
+    pub synced_folders: Vec<SyncedFolder>,
+    pub synced_devices: Vec<SyncedDevice>,
 }
 
 // Gets updated viewmodel to be rendered on the interface.
