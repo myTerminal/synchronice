@@ -18,9 +18,10 @@ pub fn show_dashboard() {
     // Create the cursive root
     let mut siv = cursive::default();
 
-    // Add the global 'quit' command
-    siv.add_global_callback('q', |s| s.quit());
+    // Add the global commands
     siv.add_global_callback('r', reload_config);
+    siv.add_global_callback('s', refresh_connection_statuses);
+    siv.add_global_callback('q', |s| s.quit());
 
     // Show notice about being under development
     show_development_notice(&mut siv);
