@@ -78,60 +78,11 @@ pub fn start(s: &mut Cursive) {
 /// reload_config(s);
 /// ```
 pub fn reload_config(s: &mut Cursive) {
-    // Get version and config
-    let version = service::get_version();
-    let config = service::get_config();
+    // Remove previous layer
+    s.pop_layer();
 
-    // Get recent events
-    let events = service::Events(vec![]); // service::get_events();
-
-    // Get updated viewmodel
-    let viewmodel = viewmodel::get_updated_viewmodel(version, config, events);
-
-    // Create folders and devices layouts
-    let mut folders_layout: LinearLayout = LinearLayout::vertical();
-    let mut devices_layout: LinearLayout = LinearLayout::vertical();
-
-    // Populate list of folders
-    folders_layout.add_child(Panel::new(TextView::new("Folder 1")));
-
-    // Populate list of devices
-    devices_layout.add_child(Panel::new(TextView::new("Devices 1")));
-
-    // Construct the layer
-    s.add_layer(
-        Dialog::around(
-            LinearLayout::vertical().child(DummyView).child(
-                LinearLayout::horizontal()
-                    .child(Dialog::around(folders_layout).title("Folders"))
-                    .child(Dialog::around(devices_layout).title("Devices")),
-            ),
-        )
-        .title("Synchronice")
-        .button("(R)eload", reload_config)
-        .button("Refre(S)h", refresh_connection_statuses)
-        .button("(Q)uit", |s| s.quit()),
-    );
-
-    // // TODO: Implement
-
-    // s.add_layer(
-    //     Dialog::text(format!("{}", version.longVersion))
-    //         .title("Test")
-    //         .button("OK", |s| s.quit()),
-    // );
-
-    // s.add_layer(
-    //     Dialog::text(format!("{}", config.devices[0].name))
-    //         .title("Devices")
-    //         .button("OK", |s| s.quit()),
-    // );
-
-    // s.add_layer(
-    //     Dialog::text(format!("{}", events.0[0].id))
-    //         .title("Events")
-    //         .button("OK", |s| s.quit()),
-    // );
+    // Replace with new layer
+    s.add_layer(get_updated_dashboard(true));
 }
 
 /// Refreshes the connection statuses.
@@ -141,4 +92,93 @@ pub fn reload_config(s: &mut Cursive) {
 /// ```
 /// refresh_connection_statuses(s);
 /// ```
-pub fn refresh_connection_statuses(s: &mut Cursive) {}
+pub fn refresh_connection_statuses(s: &mut Cursive) {
+    // Remove previous layer
+    s.pop_layer();
+
+    // Replace with new layer
+    s.add_layer(get_updated_dashboard(false));
+}
+
+/// Returns a new or updated dashboard layer.
+///
+/// # Example
+///
+/// ```
+/// get_updated_dashboard(true)
+/// ```
+pub fn get_updated_dashboard(is_initial_load: bool) -> Dialog {
+    // Get latest viewmodel
+    let viewmodel = construct_viewmodel(is_initial_load);
+
+    // Get display layouts
+    let (folders_layout, devices_layout) = get_display_layouts(viewmodel);
+
+    // Return latest dashboard layer
+    get_dashboard_layer(folders_layout, devices_layout)
+}
+
+/// Constructs a new viewmodel.
+///
+/// # Example
+///
+/// ```
+/// construct_viewmodel(true);
+/// ```
+pub fn construct_viewmodel(is_initial_load: bool) -> viewmodel::Viewmodel {
+    // Get version and config
+    let version = service::get_version();
+    let config = service::get_config();
+
+    // Get recent events
+    let events = if !is_initial_load {
+        service::get_events()
+    } else {
+        service::Events(vec![])
+    };
+
+    // Return the latest viewmodel
+    viewmodel::get_updated_viewmodel(version, config, events)
+}
+
+/// Gets a tuple of data-filled layouts.
+///
+/// # Example
+///
+/// ```
+/// get_display_layouts(viewmodel);
+/// ```
+pub fn get_display_layouts(viewmodel: viewmodel::Viewmodel) -> (LinearLayout, LinearLayout) {
+    // Create folders and devices layouts
+    let mut folders_layout: LinearLayout = LinearLayout::vertical();
+    let mut devices_layout: LinearLayout = LinearLayout::vertical();
+
+    // Populate list of folders
+    folders_layout.add_child(Panel::new(TextView::new("Folder 1")));
+
+    // Populate list of devices
+    devices_layout.add_child(Panel::new(TextView::new("Device 1")));
+
+    (folders_layout, devices_layout)
+}
+
+/// Creates an updated layer based on latest viewmodel.
+///
+/// # Example
+///
+/// ```
+/// get_dashboard_layer(folders_layout, devices_layout);
+/// ```
+pub fn get_dashboard_layer(folders_layout: LinearLayout, devices_layout: LinearLayout) -> Dialog {
+    Dialog::around(
+        LinearLayout::vertical().child(DummyView).child(
+            LinearLayout::horizontal()
+                .child(Dialog::around(folders_layout).title("Folders"))
+                .child(Dialog::around(devices_layout).title("Devices")),
+        ),
+    )
+    .title("Synchronice")
+    .button("(R)eload", reload_config)
+    .button("Refre(S)h", refresh_connection_statuses)
+    .button("(Q)uit", |s| s.quit())
+}
