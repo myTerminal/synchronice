@@ -154,12 +154,38 @@ pub fn get_display_layouts(viewmodel: viewmodel::Viewmodel) -> (LinearLayout, Li
     let mut devices_layout: LinearLayout = LinearLayout::vertical();
 
     // Populate list of folders
-    folders_layout.add_child(Panel::new(TextView::new("Folder 1")));
+    for folder in viewmodel.synced_folders {
+        folders_layout.add_child(create_folder_view(&folder));
+    }
 
     // Populate list of devices
-    devices_layout.add_child(Panel::new(TextView::new("Device 1")));
+    for device in viewmodel.synced_devices {
+        devices_layout.add_child(create_device_view(&device));
+    }
 
     (folders_layout, devices_layout)
+}
+
+/// Creates a folder view
+///
+/// # Example
+///
+/// ```
+/// create_folder_view(folder);
+/// ```
+pub fn create_folder_view(folder: &viewmodel::SyncedFolder) -> Panel<TextView> {
+    Panel::new(TextView::new(folder.label))
+}
+
+/// Creates a device view
+///
+/// # Example
+///
+/// ```
+/// create_device_view(device);
+/// ```
+pub fn create_device_view(device: &viewmodel::SyncedDevice) -> Panel<TextView> {
+    Panel::new(TextView::new(device.name))
 }
 
 /// Creates an updated layer based on latest viewmodel.
