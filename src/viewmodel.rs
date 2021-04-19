@@ -37,26 +37,7 @@ pub struct Viewmodel {
 
 // Gets updated viewmodel to be rendered on the interface.
 pub fn get_updated_viewmodel(version: Version, config: Config, events: Events) -> Viewmodel {
-    // // TODO: Implement
-
-    // s.add_layer(
-    //     Dialog::text(format!("{}", version.longVersion))
-    //         .title("Test")
-    //         .button("OK", |s| s.quit()),
-    // );
-
-    // s.add_layer(
-    //     Dialog::text(format!("{}", config.devices[0].name))
-    //         .title("Devices")
-    //         .button("OK", |s| s.quit()),
-    // );
-
-    // s.add_layer(
-    //     Dialog::text(format!("{}", events.0[0].id))
-    //         .title("Events")
-    //         .button("OK", |s| s.quit()),
-    // );
-
+    // TODO: Implement
     return Viewmodel {
         info: Info {
             version: version.longVersion,
