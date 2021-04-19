@@ -46,23 +46,29 @@ pub struct Viewmodel {
 /// ```
 /// get_updated_viewmodel(v, c, e);
 /// ```
-pub fn get_updated_viewmodel(
-    version: Version,
-    config: &'static Config,
-    events: Events,
-) -> Viewmodel {
+pub fn get_updated_viewmodel(version: Version, config: &'static Config, events: Events) -> Viewmodel {
+    let synced_folders = config
+        .folders
+        .iter()
+        .map(|f| SyncedFolder {
+            label: &f.label,
+            path: &f.path,
+            status: "Unknown",
+            devices: f
+                .devices
+                .iter()
+                .map(|d| d.deviceID.as_str())
+                .collect::<Vec<&'static str>>(),
+        })
+        .collect::<Vec<SyncedFolder>>();
+
     // TODO: Implement
     return Viewmodel {
         info: Info {
             version: version.longVersion,
             status: "Connected".to_string(),
         },
-        synced_folders: vec![SyncedFolder {
-            label: "workspace",
-            path: "~/_store/workspace",
-            status: "Connected",
-            devices: vec!["123-123-123-123"],
-        }],
+        synced_folders,
         synced_devices: vec![SyncedDevice {
             id: "123-123-123-123",
             name: "That-Device",
