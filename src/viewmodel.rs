@@ -7,7 +7,7 @@ use crate::service::{Config, Events, Version};
 /// This struct defines the info portion of the viewmodel.
 pub struct Info {
     pub version: String,
-    pub status: &'static str,
+    pub status: String,
 }
 
 /// An abstract representation of folders to be displayed on the dashboard.
@@ -26,6 +26,7 @@ pub struct SyncedFolder {
 pub struct SyncedDevice {
     pub id: &'static str,
     pub name: &'static str,
+    pub status: &'static str,
     pub folders: Vec<&'static str>,
 }
 
@@ -45,12 +46,16 @@ pub struct Viewmodel {
 /// ```
 /// get_updated_viewmodel(v, c, e);
 /// ```
-pub fn get_updated_viewmodel(version: Version, config: Config, events: Events) -> Viewmodel {
+pub fn get_updated_viewmodel(
+    version: Version,
+    config: &'static Config,
+    events: Events,
+) -> Viewmodel {
     // TODO: Implement
     return Viewmodel {
         info: Info {
             version: version.longVersion,
-            status: "Connected",
+            status: "Connected".to_string(),
         },
         synced_folders: vec![SyncedFolder {
             label: "workspace",
@@ -61,6 +66,7 @@ pub fn get_updated_viewmodel(version: Version, config: Config, events: Events) -
         synced_devices: vec![SyncedDevice {
             id: "123-123-123-123",
             name: "That-Device",
+            status: "Connected",
             folders: vec!["workspace"],
         }],
     };

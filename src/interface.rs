@@ -5,6 +5,7 @@ use cursive::Cursive;
 
 use crate::config;
 use crate::service;
+use crate::store;
 use crate::viewmodel;
 
 /// Creates the text-based interface using curses.
@@ -66,6 +67,9 @@ pub fn start(s: &mut Cursive) {
         );
     }
 
+    // Init data-store
+    store::init();
+
     // Load interface
     reload_config(s);
 }
@@ -108,14 +112,16 @@ pub fn refresh_connection_statuses(s: &mut Cursive) {
 /// get_updated_dashboard(true)
 /// ```
 pub fn get_updated_dashboard(is_initial_load: bool) -> Dialog {
-    // Get latest viewmodel
-    let viewmodel = construct_viewmodel(is_initial_load);
+    // Construct latest viewmodel
+    construct_viewmodel(is_initial_load);
 
-    // Get display layouts
-    let (folders_layout, devices_layout) = get_display_layouts(viewmodel);
+    unsafe {
+        // Get display layouts
+        let (folders_layout, devices_layout) = get_display_layouts(&store::STORE[0]);
 
-    // Return latest dashboard layer
-    get_dashboard_layer(folders_layout, devices_layout)
+        // Return latest dashboard layer
+        get_dashboard_layer(folders_layout, devices_layout)
+    }
 }
 
 /// Constructs a new viewmodel.
@@ -125,10 +131,13 @@ pub fn get_updated_dashboard(is_initial_load: bool) -> Dialog {
 /// ```
 /// construct_viewmodel(true);
 /// ```
-pub fn construct_viewmodel(is_initial_load: bool) -> viewmodel::Viewmodel {
+pub fn construct_viewmodel(is_initial_load: bool) {
     // Get version and config
     let version = service::get_version();
-    let config = service::get_config();
+    // let config = service::get_config();
+    unsafe {
+        store::CONFIG.push(service::get_config());
+    }
 
     // Get recent events
     let events = if !is_initial_load {
@@ -138,7 +147,9 @@ pub fn construct_viewmodel(is_initial_load: bool) -> viewmodel::Viewmodel {
     };
 
     // Return the latest viewmodel
-    viewmodel::get_updated_viewmodel(version, config, events)
+    unsafe {
+        store::STORE[0] = viewmodel::get_updated_viewmodel(version, &store::CONFIG[0], events);
+    }
 }
 
 /// Gets a tuple of data-filled layouts.
@@ -148,18 +159,18 @@ pub fn construct_viewmodel(is_initial_load: bool) -> viewmodel::Viewmodel {
 /// ```
 /// get_display_layouts(viewmodel);
 /// ```
-pub fn get_display_layouts(viewmodel: viewmodel::Viewmodel) -> (LinearLayout, LinearLayout) {
+pub fn get_display_layouts(viewmodel: &viewmodel::Viewmodel) -> (LinearLayout, LinearLayout) {
     // Create folders and devices layouts
     let mut folders_layout: LinearLayout = LinearLayout::vertical();
     let mut devices_layout: LinearLayout = LinearLayout::vertical();
 
     // Populate list of folders
-    for folder in viewmodel.synced_folders {
+    for folder in &viewmodel.synced_folders {
         folders_layout.add_child(create_folder_view(&folder));
     }
 
     // Populate list of devices
-    for device in viewmodel.synced_devices {
+    for device in &viewmodel.synced_devices {
         devices_layout.add_child(create_device_view(&device));
     }
 

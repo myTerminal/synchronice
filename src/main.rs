@@ -14,6 +14,7 @@ mod config;
 mod environment;
 mod interface;
 mod service;
+mod store;
 mod viewmodel;
 
 use environment::does_exist;
