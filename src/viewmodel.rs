@@ -29,13 +29,22 @@ pub struct SyncedDevice {
     pub folders: Vec<&'static str>,
 }
 
+/// An abstract representation of a viewmodel.
+///
+/// This struct defines the viewmodel for the entire dashboard.
 pub struct Viewmodel {
     pub info: Info,
     pub synced_folders: Vec<SyncedFolder>,
     pub synced_devices: Vec<SyncedDevice>,
 }
 
-// Gets updated viewmodel to be rendered on the interface.
+/// Gets updated viewmodel to be rendered on the interface.
+///
+/// # Example
+///
+/// ```
+/// get_updated_viewmodel(v, c, e);
+/// ```
 pub fn get_updated_viewmodel(version: Version, config: Config, events: Events) -> Viewmodel {
     // TODO: Implement
     return Viewmodel {
