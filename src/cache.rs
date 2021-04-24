@@ -1,6 +1,6 @@
 //! Holds static data for cache.
 
-use crate::service::{Config, Events};
+use crate::types::{Config, Events};
 
 // Holds config fetched from service
 static mut CONFIGS: Vec<Config> = vec![];

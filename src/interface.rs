@@ -7,6 +7,7 @@ use crate::cache;
 use crate::config;
 use crate::service;
 use crate::store;
+use crate::types::{Events, SyncedDevice, SyncedFolder, Viewmodel};
 
 /// Creates the text-based interface using curses.
 ///
@@ -142,7 +143,7 @@ pub fn construct_viewmodel(is_initial_load: bool) {
     let events = if !is_initial_load {
         service::get_events()
     } else {
-        service::Events(vec![])
+        Events(vec![])
     };
 
     // Return the latest viewmodel
@@ -158,7 +159,7 @@ pub fn construct_viewmodel(is_initial_load: bool) {
 /// ```
 /// get_display_layouts(viewmodel);
 /// ```
-pub fn get_display_layouts(viewmodel: &store::Viewmodel) -> (LinearLayout, LinearLayout) {
+pub fn get_display_layouts(viewmodel: &Viewmodel) -> (LinearLayout, LinearLayout) {
     // Create folders and devices layouts
     let mut folders_layout: LinearLayout = LinearLayout::vertical();
     let mut devices_layout: LinearLayout = LinearLayout::vertical();
@@ -183,7 +184,7 @@ pub fn get_display_layouts(viewmodel: &store::Viewmodel) -> (LinearLayout, Linea
 /// ```
 /// create_folder_view(folder);
 /// ```
-pub fn create_folder_view(folder: &store::SyncedFolder) -> Panel<TextView> {
+pub fn create_folder_view(folder: &SyncedFolder) -> Panel<TextView> {
     Panel::new(TextView::new(folder.label))
 }
 
@@ -194,7 +195,7 @@ pub fn create_folder_view(folder: &store::SyncedFolder) -> Panel<TextView> {
 /// ```
 /// create_device_view(device);
 /// ```
-pub fn create_device_view(device: &store::SyncedDevice) -> Panel<TextView> {
+pub fn create_device_view(device: &SyncedDevice) -> Panel<TextView> {
     Panel::new(TextView::new(device.name))
 }
 

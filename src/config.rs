@@ -6,14 +6,7 @@ use quick_xml::events::Event;
 use quick_xml::Reader;
 
 use crate::environment;
-
-/// An abtract representation of set of connection details.
-///
-/// This struct defines basic connection details for the Syncthing REST API.
-pub struct Connection {
-    pub apikey: String,
-    pub address: String,
-}
+use crate::types::Connection;
 
 /// Reads apikey for REST API.
 ///

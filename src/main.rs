@@ -16,6 +16,7 @@ mod environment;
 mod interface;
 mod service;
 mod store;
+mod types;
 
 use environment::does_exist;
 use interface::show_dashboard;
