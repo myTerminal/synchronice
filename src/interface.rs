@@ -37,7 +37,7 @@ pub fn show_dashboard() {
 /// ```
 /// show_development_notice();
 /// ```
-pub fn show_development_notice(s: &mut Cursive) {
+fn show_development_notice(s: &mut Cursive) {
     s.add_layer(
         Dialog::text("Synchronice is still under development!")
             .title("Notice")
@@ -52,7 +52,7 @@ pub fn show_development_notice(s: &mut Cursive) {
 /// ```
 /// start();
 /// ```
-pub fn start(s: &mut Cursive) {
+fn start(s: &mut Cursive) {
     s.pop_layer();
 
     let connection = config::get_connection();
@@ -80,7 +80,7 @@ pub fn start(s: &mut Cursive) {
 /// ```
 /// reload_config(s);
 /// ```
-pub fn reload_config(s: &mut Cursive) {
+fn reload_config(s: &mut Cursive) {
     // Remove previous layer
     s.pop_layer();
 
@@ -95,7 +95,7 @@ pub fn reload_config(s: &mut Cursive) {
 /// ```
 /// refresh_connection_statuses(s);
 /// ```
-pub fn refresh_connection_statuses(s: &mut Cursive) {
+fn refresh_connection_statuses(s: &mut Cursive) {
     // Remove previous layer
     s.pop_layer();
 
@@ -110,7 +110,7 @@ pub fn refresh_connection_statuses(s: &mut Cursive) {
 /// ```
 /// get_updated_dashboard(true)
 /// ```
-pub fn get_updated_dashboard(is_initial_load: bool) -> Dialog {
+fn get_updated_dashboard(is_initial_load: bool) -> Dialog {
     // Construct latest viewmodel
     viewmodel::refresh_viewmodel(is_initial_load);
 
@@ -128,7 +128,7 @@ pub fn get_updated_dashboard(is_initial_load: bool) -> Dialog {
 /// ```
 /// get_display_layouts(viewmodel);
 /// ```
-pub fn get_display_layouts(viewmodel: &Viewmodel) -> (LinearLayout, LinearLayout) {
+fn get_display_layouts(viewmodel: &Viewmodel) -> (LinearLayout, LinearLayout) {
     // Create folders and devices layouts
     let mut folders_layout: LinearLayout = LinearLayout::vertical();
     let mut devices_layout: LinearLayout = LinearLayout::vertical();
@@ -153,7 +153,7 @@ pub fn get_display_layouts(viewmodel: &Viewmodel) -> (LinearLayout, LinearLayout
 /// ```
 /// create_folder_view(folder);
 /// ```
-pub fn create_folder_view(folder: &SyncedFolder) -> Panel<TextView> {
+fn create_folder_view(folder: &SyncedFolder) -> Panel<TextView> {
     Panel::new(TextView::new(folder.label))
 }
 
@@ -164,7 +164,7 @@ pub fn create_folder_view(folder: &SyncedFolder) -> Panel<TextView> {
 /// ```
 /// create_device_view(device);
 /// ```
-pub fn create_device_view(device: &SyncedDevice) -> Panel<TextView> {
+fn create_device_view(device: &SyncedDevice) -> Panel<TextView> {
     Panel::new(TextView::new(device.name))
 }
 
@@ -175,7 +175,7 @@ pub fn create_device_view(device: &SyncedDevice) -> Panel<TextView> {
 /// ```
 /// get_dashboard_layer(folders_layout, devices_layout);
 /// ```
-pub fn get_dashboard_layer(folders_layout: LinearLayout, devices_layout: LinearLayout) -> Dialog {
+fn get_dashboard_layer(folders_layout: LinearLayout, devices_layout: LinearLayout) -> Dialog {
     Dialog::around(
         LinearLayout::vertical().child(DummyView).child(
             LinearLayout::horizontal()

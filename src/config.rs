@@ -50,7 +50,7 @@ pub fn get_connection() -> Connection {
 /// ```
 /// get_syncthing_config_as_string();
 /// ```
-pub fn get_syncthing_config_as_string() -> String {
+fn get_syncthing_config_as_string() -> String {
     fs::read_to_string(get_syncthing_config_path()).expect("Could not read Syncthing config file!")
 }
 
@@ -61,7 +61,7 @@ pub fn get_syncthing_config_as_string() -> String {
 /// ```
 /// get_syncthing_config_path();
 /// ```
-pub fn get_syncthing_config_path() -> String {
+fn get_syncthing_config_path() -> String {
     let username_as_list = environment::run_command_and_get_list("echo $USER");
 
     format!(

@@ -1,8 +1,8 @@
 //! Holds static data for access across the application.
 
 use crate::cache;
-use crate::types::{Config, Events, Info, SyncedDevice, SyncedFolder, Version, Viewmodel};
 use crate::service;
+use crate::types::{Config, Events, Info, SyncedDevice, SyncedFolder, Version, Viewmodel};
 
 /// Inits an empty store.
 ///
@@ -65,7 +65,7 @@ pub fn refresh_viewmodel(is_initial_load: bool) {
 /// ```
 /// update_viewmodel(v, c, e);
 /// ```
-pub fn update_viewmodel(version: Version, config: &'static Config, events: Events) {
+fn update_viewmodel(version: Version, config: &'static Config, events: Events) {
     let synced_folders = config
         .folders
         .iter()
