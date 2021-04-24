@@ -6,8 +6,8 @@ use cursive::Cursive;
 use crate::cache;
 use crate::config;
 use crate::service;
-use crate::store;
 use crate::types::{Events, SyncedDevice, SyncedFolder, Viewmodel};
+use crate::viewmodel;
 
 /// Creates the text-based interface using curses.
 ///
@@ -68,8 +68,8 @@ pub fn start(s: &mut Cursive) {
         );
     }
 
-    // Init data-store
-    store::init();
+    // Init viewmodel
+    viewmodel::init();
 
     // Load interface
     reload_config(s);
@@ -118,7 +118,7 @@ pub fn get_updated_dashboard(is_initial_load: bool) -> Dialog {
 
     unsafe {
         // Get display layouts
-        let (folders_layout, devices_layout) = get_display_layouts(&store::STORE[0]);
+        let (folders_layout, devices_layout) = get_display_layouts(&viewmodel::STORE[0]);
 
         // Return latest dashboard layer
         get_dashboard_layer(folders_layout, devices_layout)
@@ -148,7 +148,7 @@ pub fn construct_viewmodel(is_initial_load: bool) {
 
     // Return the latest viewmodel
     unsafe {
-        store::STORE[0] = store::get_updated_viewmodel(version, cache::get_config(), events);
+        viewmodel::STORE[0] = viewmodel::get_updated_viewmodel(version, cache::get_config(), events);
     }
 }
 
