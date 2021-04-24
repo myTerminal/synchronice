@@ -1,6 +1,6 @@
 //! Holds static data for cache.
 
-use crate::types::{Config, Events};
+use crate::types::{Config, Events, Info, Viewmodel};
 
 // Holds config fetched from service
 static mut CONFIGS: Vec<Config> = vec![];
@@ -76,5 +76,49 @@ pub fn get_events() -> &'static Events {
         }
 
         &EVENTS[0]
+    }
+}
+
+// Holds viewmodel data
+static mut DATA: Vec<Viewmodel> = vec![];
+
+/// Caches the current state of viewmodel.
+///
+/// # Example
+///
+/// ```
+/// set_viewmodel(viewmodel);
+/// ```
+pub fn set_viewmodel(viewmodel: Viewmodel) {
+    unsafe {
+        if DATA.len() == 0 {
+            DATA.push(viewmodel);
+        } else {
+            DATA[0] = viewmodel;
+        }
+    }
+}
+
+/// Retrieves theq cached viewmodel.
+///
+/// # Example
+///
+/// ```
+/// let viewmodel = get_viewmodel();
+/// ```
+pub fn get_viewmodel() -> &'static Viewmodel {
+    unsafe {
+        if DATA.len() == 0 {
+            set_viewmodel(Viewmodel {
+                info: Info {
+                    version: "".to_string(),
+                    status: "".to_string(),
+                },
+                synced_folders: vec![],
+                synced_devices: vec![],
+            });
+        }
+
+        &DATA[0]
     }
 }

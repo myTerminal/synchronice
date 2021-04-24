@@ -116,13 +116,11 @@ pub fn get_updated_dashboard(is_initial_load: bool) -> Dialog {
     // Construct latest viewmodel
     construct_viewmodel(is_initial_load);
 
-    unsafe {
-        // Get display layouts
-        let (folders_layout, devices_layout) = get_display_layouts(&viewmodel::STORE[0]);
+    // Get display layouts
+    let (folders_layout, devices_layout) = get_display_layouts(&viewmodel::get_data());
 
-        // Return latest dashboard layer
-        get_dashboard_layer(folders_layout, devices_layout)
-    }
+    // Return latest dashboard layer
+    get_dashboard_layer(folders_layout, devices_layout)
 }
 
 /// Constructs a new viewmodel.
@@ -146,10 +144,8 @@ pub fn construct_viewmodel(is_initial_load: bool) {
         Events(vec![])
     };
 
-    // Return the latest viewmodel
-    unsafe {
-        viewmodel::STORE[0] = viewmodel::get_updated_viewmodel(version, cache::get_config(), events);
-    }
+    // Cache the latest viewmodel
+    viewmodel::update_viewmodel(version, cache::get_config(), events);
 }
 
 /// Gets a tuple of data-filled layouts.

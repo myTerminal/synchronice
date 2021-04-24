@@ -1,8 +1,7 @@
 //! Holds static data for access across the application.
 
+use crate::cache;
 use crate::types::{Config, Events, Info, SyncedDevice, SyncedFolder, Version, Viewmodel};
-
-pub static mut STORE: Vec<Viewmodel> = vec![];
 
 /// Inits an empty store.
 ///
@@ -12,16 +11,25 @@ pub static mut STORE: Vec<Viewmodel> = vec![];
 /// init();
 /// ```
 pub fn init() {
-    unsafe {
-        STORE.push(Viewmodel {
-            info: Info {
-                version: "".to_string(),
-                status: "".to_string(),
-            },
-            synced_folders: vec![],
-            synced_devices: vec![],
-        })
-    }
+    cache::set_viewmodel(Viewmodel {
+        info: Info {
+            version: "".to_string(),
+            status: "".to_string(),
+        },
+        synced_folders: vec![],
+        synced_devices: vec![],
+    });
+}
+
+/// Gets the viewmodel in its current state.
+///
+/// # Example
+///
+/// ```
+/// viewmodel = get_viewmodel();
+/// ```
+pub fn get_data() -> &'static Viewmodel {
+    cache::get_viewmodel()
 }
 
 /// Gets updated viewmodel to be rendered on the interface.
@@ -31,11 +39,7 @@ pub fn init() {
 /// ```
 /// get_updated_viewmodel(v, c, e);
 /// ```
-pub fn get_updated_viewmodel(
-    version: Version,
-    config: &'static Config,
-    events: Events,
-) -> Viewmodel {
+pub fn update_viewmodel(version: Version, config: &'static Config, events: Events) {
     let synced_folders = config
         .folders
         .iter()
@@ -63,12 +67,12 @@ pub fn get_updated_viewmodel(
         .collect::<Vec<SyncedDevice>>();
 
     // TODO: Implement
-    return Viewmodel {
+    cache::set_viewmodel(Viewmodel {
         info: Info {
             version: version.longVersion,
             status: "Connected".to_string(),
         },
         synced_folders,
         synced_devices,
-    };
+    });
 }
