@@ -10,6 +10,7 @@ use std::process;
 use ansi_term::Color;
 use clap::{crate_authors, crate_description, crate_name, crate_version, App, SubCommand};
 
+mod cache;
 mod config;
 mod environment;
 mod interface;

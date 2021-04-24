@@ -3,6 +3,7 @@
 use cursive::views::{Dialog, DummyView, LinearLayout, Panel, TextView};
 use cursive::Cursive;
 
+use crate::cache;
 use crate::config;
 use crate::service;
 use crate::store;
@@ -135,7 +136,7 @@ pub fn construct_viewmodel(is_initial_load: bool) {
     let version = service::get_version();
     // let config = service::get_config();
     unsafe {
-        store::CONFIG.push(service::get_config());
+        cache::CONFIG.push(service::get_config());
     }
 
     // Get recent events
@@ -147,7 +148,7 @@ pub fn construct_viewmodel(is_initial_load: bool) {
 
     // Return the latest viewmodel
     unsafe {
-        store::STORE[0] = store::get_updated_viewmodel(version, &store::CONFIG[0], events);
+        store::STORE[0] = store::get_updated_viewmodel(version, &cache::CONFIG[0], events);
     }
 }
 

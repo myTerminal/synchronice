@@ -4,9 +4,6 @@ use crate::service::{Config, Events, Version};
 
 pub static mut STORE: Vec<Viewmodel> = vec![];
 
-// TODO: Remove soon
-pub static mut CONFIG: Vec<Config> = vec![];
-
 /// An abstract representation of info to be displayed on the dashboard.
 ///
 /// This struct defines the info portion of the viewmodel.
