@@ -3,9 +3,7 @@
 use cursive::views::{Dialog, DummyView, LinearLayout, Panel, TextView};
 use cursive::Cursive;
 
-use crate::cache;
 use crate::config;
-use crate::service;
 use crate::types::{Events, SyncedDevice, SyncedFolder, Viewmodel};
 use crate::viewmodel;
 
@@ -114,38 +112,13 @@ pub fn refresh_connection_statuses(s: &mut Cursive) {
 /// ```
 pub fn get_updated_dashboard(is_initial_load: bool) -> Dialog {
     // Construct latest viewmodel
-    construct_viewmodel(is_initial_load);
+    viewmodel::refresh_viewmodel(is_initial_load);
 
     // Get display layouts
     let (folders_layout, devices_layout) = get_display_layouts(&viewmodel::get_data());
 
     // Return latest dashboard layer
     get_dashboard_layer(folders_layout, devices_layout)
-}
-
-/// Constructs a new viewmodel.
-///
-/// # Example
-///
-/// ```
-/// construct_viewmodel(true);
-/// ```
-pub fn construct_viewmodel(is_initial_load: bool) {
-    // Get version and config
-    let version = service::get_version();
-
-    // Cache current config
-    cache::set_config(service::get_config());
-
-    // Get recent events
-    let events = if !is_initial_load {
-        service::get_events()
-    } else {
-        Events(vec![])
-    };
-
-    // Cache the latest viewmodel
-    viewmodel::update_viewmodel(version, cache::get_config(), events);
 }
 
 /// Gets a tuple of data-filled layouts.

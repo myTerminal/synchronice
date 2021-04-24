@@ -2,6 +2,7 @@
 
 use crate::cache;
 use crate::types::{Config, Events, Info, SyncedDevice, SyncedFolder, Version, Viewmodel};
+use crate::service;
 
 /// Inits an empty store.
 ///
@@ -32,12 +33,37 @@ pub fn get_data() -> &'static Viewmodel {
     cache::get_viewmodel()
 }
 
+/// Constructs a new viewmodel.
+///
+/// # Example
+///
+/// ```
+///  refresh_viewmodel(true);
+/// ```
+pub fn refresh_viewmodel(is_initial_load: bool) {
+    // Get version and config
+    let version = service::get_version();
+
+    // Cache current config
+    cache::set_config(service::get_config());
+
+    // Get recent events
+    let events = if !is_initial_load {
+        service::get_events()
+    } else {
+        Events(vec![])
+    };
+
+    // Cache the latest viewmodel
+    update_viewmodel(version, cache::get_config(), events);
+}
+
 /// Gets updated viewmodel to be rendered on the interface.
 ///
 /// # Example
 ///
 /// ```
-/// get_updated_viewmodel(v, c, e);
+/// update_viewmodel(v, c, e);
 /// ```
 pub fn update_viewmodel(version: Version, config: &'static Config, events: Events) {
     let synced_folders = config
