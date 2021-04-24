@@ -134,10 +134,9 @@ pub fn get_updated_dashboard(is_initial_load: bool) -> Dialog {
 pub fn construct_viewmodel(is_initial_load: bool) {
     // Get version and config
     let version = service::get_version();
-    // let config = service::get_config();
-    unsafe {
-        cache::CONFIG.push(service::get_config());
-    }
+
+    // Cache current config
+    cache::set_config(service::get_config());
 
     // Get recent events
     let events = if !is_initial_load {
@@ -148,7 +147,7 @@ pub fn construct_viewmodel(is_initial_load: bool) {
 
     // Return the latest viewmodel
     unsafe {
-        store::STORE[0] = store::get_updated_viewmodel(version, &cache::CONFIG[0], events);
+        store::STORE[0] = store::get_updated_viewmodel(version, cache::get_config(), events);
     }
 }
 
