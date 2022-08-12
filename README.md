@@ -4,7 +4,8 @@
 [![Crates.io downloads](https://img.shields.io/crates/d/synchronice)](https://crates.io/crates/synchronice)  
 [![Code Climate](https://codeclimate.com/github/myTerminal/synchronice.png)](https://codeclimate.com/github/myTerminal/synchronice)
 [![Coverage Status](https://img.shields.io/coveralls/myTerminal/synchronice.svg)](https://coveralls.io/r/myTerminal/synchronice?branch=master)  
-[![License](https://img.shields.io/github/license/myTerminal/synchronice.svg)](https://opensource.org/licenses/MIT)
+[![License](https://img.shields.io/github/license/myTerminal/synchronice.svg)](https://opensource.org/licenses/MIT)  
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/Y8Y5E5GL7)
 
 A text-based frontend for Syncthing [in-progress]
 
