@@ -17,11 +17,15 @@ deps:
 	@echo "Make sure you have 'ncurses' installed."
 
 env:
-	@echo "Checking environment for Rust compiler..."
-ifeq ($(shell command -v cargo),)
-	@echo "'cargo' is required for installation."
-else
+	@echo "Looking for Rust compiler..."
+ifneq ($(shell command -v cargo),)
 	@echo "'cargo' found, build can continue."
+else
+	@echo "'cargo' not found!"
+	@echo "Attemping to install 'cargo' using Crater..."
+	git clone https://github.com/crater-space/cli /tmp/crater-cli
+	/tmp/crater-cli/crater install cargo
+	rm -rf /tmp/crater-cli
 endif
 
 req: deps env
