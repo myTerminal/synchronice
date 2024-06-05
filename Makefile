@@ -22,7 +22,7 @@ ifneq ($(shell command -v cargo),)
 	@echo "'cargo' found, build can continue."
 else
 	@echo "'cargo' not found!"
-	@echo "Attemping to install 'cargo' using Crater..."
+	@echo "Attempting to install 'cargo' using Crater..."
 	git clone https://github.com/crater-space/cli /tmp/crater-cli
 	/tmp/crater-cli/crater install cargo
 	rm -rf /tmp/crater-cli
